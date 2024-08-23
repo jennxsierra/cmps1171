@@ -1,0 +1,19 @@
+CREATE OR REPLACE FUNCTION public.testing_function(p_num numeric, p_msg text)
+RETURNS text
+LANGUAGE 'plpgsql'
+COST 100
+VOLATILE
+AS $BODY$
+	
+DECLARE
+v_return_msg text;
+
+BEGIN
+v_return_msg := p_msg||' '||p_num;
+
+RETURN v_return_msg;
+END;
+$BODY$
+
+select public.testing_function(101,'Hello Akram');
+select public.testing_function(199,'Testing Function');

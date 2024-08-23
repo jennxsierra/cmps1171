@@ -1,0 +1,25 @@
+ASSUMPTIONS
+
+- Employees with the same first and last name can exist
+- An employee can be a part of more than one department
+- An employee can have many email addresses
+- An employee can have many phone numbers
+
+FUNCTIONAL DEPENDENCIES
+
+EmployeeNumber -> EmployeeName, Department
+EmployeeName -> [NULL]
+Department -> [NULL]
+EmailAddress -> EmployeeNumber
+Phone -> EmployeeNumber
+
+DepartmentCode -> DepartmentName
+DepartmentName -> DepartmentCode
+
+TABLES
+
+department([pk] DepartmentCode, DepartmentName)
+employee([pk] EmployeeNumber, EmployeeName, [fk -> department.DepartmentCode] Department)
+employee_department([fk -> employee.EmployeeNumber] employee, [fk -> department.DepartmentCode] department)
+email([fk -> employee.EmployeeNumber] employee, email)
+phone([fk -> employee.EmployeeNumber] employee, phone)

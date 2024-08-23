@@ -1,0 +1,40 @@
+CREATE TABLE students (
+	roll numeric(10),
+	name varchar(30),
+	course varchar(30)
+);
+
+CREATE TABLE students_logs (
+	roll_old numeric(10),
+	name_old varchar(30),
+	course_old varchar(30)
+);
+
+CREATE FUNCTION student_logs_trg_func()
+RETURNS trigger
+LANGUAGE 'plpgsql'
+AS $$
+DECLARE
+BEGIN
+	INSERT INTO students_logs
+	(roll_old, name_old, course_old)
+	VALUES (old.roll, old.name, old.course);
+RETURN NEW;	
+END;
+$$;
+
+CREATE TRIGGER student_trg
+	BEFORE DELETE OR UPDATE
+	ON students
+	FOR EACH ROW
+	EXECUTE PROCEDURE student_logs_trg_func();
+
+INSERT INTO students VALUES (1, 'Akram', 'MCA');
+
+SELECT *
+	FROM students;
+
+SELECT *
+	FROM students_logs;
+
+UPDATE students SET NAME = 'Akram Sohail' WHERE roll = 1;

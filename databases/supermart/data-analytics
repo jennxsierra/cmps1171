@@ -1,0 +1,170 @@
+-- IN 
+SELECT *
+FROM customer
+WHERE city
+IN ('Philadelphia', 'Seattle')
+
+-- WHERE
+SELECT *
+FROM customer
+WHERE age
+BETWEEN 20 AND 30;
+
+SELECT *
+FROM customer
+WHERE age
+NOT BETWEEN 20 AND 30;
+
+SELECT *
+FROM sales
+WHERE ship_date
+BETWEEN '2015-04-01' AND '2016-04-01';
+
+-- LIKE
+SELECT *
+FROM customer_table
+WHERE first_name
+LIKE 'Jo%';
+
+SELECT *
+FROM customer_table
+WHERE first_name
+LIKE '%od%';
+
+SELECT first_name, last_name
+FROM customer_table
+WHERE first_name
+LIKE 'Jas_n';
+
+SELECT first_name, last_name
+FROM customer_table
+WHERE last_name
+NOT LIKE 'J%';
+
+SELECT *
+FROM customer
+WHERE customer_name
+LIKE '%Nelson%';
+
+SELECT *
+FROM customer
+WHERE customer_name
+LIKE '____ %';
+
+SELECT DISTINCT city
+FROM customer
+WHERE city
+NOT LIKE 'S%';
+
+-- ORDER BY
+SELECT *
+FROM customer
+WHERE state = 'California'
+ORDER BY customer_name;
+
+SELECT *
+FROM customer
+ORDER BY 2 DESC;
+
+SELECT *
+FROM customer
+WHERE age > 25
+ORDER BY city ASC, customer_name DESC;
+
+SELECT *
+FROM customer
+ORDER BY age;
+
+-- LIMIT
+SELECT *
+FROM customer
+WHERE age >= 25
+ORDER BY age DESC
+LIMIT 8;
+
+SELECT *
+FROM customer
+WHERE age >= 25
+ORDER BY age DESC
+LIMIT 10;
+
+-- ALIAS
+SELECT customer_id AS "Serial Number",
+customer_name AS name,
+age AS customer_age
+FROM customer;
+
+-- COUNT
+SELECT COUNT(*)
+FROM sales;
+
+SELECT COUNT (order_line) AS "Number of Products Ordered",
+COUNT (DISTINCT order_id) AS "Number of Orders"
+FROM sales
+WHERE customer_id = 'CG-12520';
+
+-- SUM
+SELECT SUM(profit) AS "Total Profit"
+FROM sales;
+
+SELECT SUM(quantity) AS "Total Quantity"
+FROM sales
+WHERE product_id = 'FUR-TA-10000577';
+
+-- AVERAGE
+SELECT AVG(age) AS "Average Customer Age"
+FROM customer;
+
+SELECT AVG(sales * 0.10) AS "Average Commission Value"
+FROM sales;
+
+-- MIN/MAX
+SELECT MIN(sales) AS min_sales_June15
+FROM sales
+WHERE order_date
+BETWEEN '2015-06-01' AND '2015-06-30';
+
+SELECT MAX(sales) AS max_sales_June15
+FROM sales
+WHERE order_date
+BETWEEN '2015-06-01' AND '2015-06-30';
+
+-- GROUP BY
+SELECT region, COUNT(customer_id) AS customer_count
+FROM customer
+GROUP BY region;
+
+SELECT product_id, SUM(quantity) AS quantity_sold
+FROM sales
+GROUP BY product_id
+ORDER BY quantity_sold DESC;
+
+SELECT customer_id,
+MIN(sales) AS min_sales,
+MAX(sales) AS max_sales,
+AVG(sales) AS avg_sales,
+SUM(sales) AS total_sales
+FROM sales
+GROUP BY customer_id
+ORDER BY total_sales DESC
+LIMIT 5;
+
+-- HAVING
+SELECT region, COUNT(customer_id) AS customer_count
+FROM customer
+GROUP BY region
+HAVING COUNT(customer_id) > 200;
+
+-- 4 results when not using HAVING
+SELECT region, COUNT(customer_id) AS customer_count
+FROM customer
+WHERE customer_name LIKE 'A%'
+GROUP BY region; 
+
+
+-- 2 results when using HAVING
+SELECT region, COUNT(customer_id) AS customer_count
+FROM customer
+WHERE customer_name LIKE 'A%'
+GROUP BY region
+HAVING COUNT(customer_id) > 15;
